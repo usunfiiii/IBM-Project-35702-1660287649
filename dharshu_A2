@@ -1,0 +1,75 @@
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+import statsmodels.api as sm
+from google.colab import files
+
+
+uploaded = files.upload()
+file_data = pd.read_csv('Churn_Modelling.csv')
+file_data
+file_data['Balance'].mean()
+file_data['Balance'].median()
+file_data['Balance'].std()
+file_data['Surname'].value_counts()
+file_data['Surname'].value_counts()
+file_data.boxplot(column=['Balance'], grid=False)
+file_data.boxplot(column=['Balance'], grid=False)
+file_data.hist(column='Balance', grid=False, edgecolor='black')
+sns.kdeplot(file_data['Balance'])
+plt.scatter(file_data.CreditScore.head(100), file_data.Age.head(100))
+plt.title('Scatter')
+plt.xlabel('CreditScore')
+plt.ylabel('Age')
+file_data.corr()
+y = file_data['CustomerId']
+x = file_data['HasCrCard']
+x = sm.add_constant(x)
+model = sm.OLS(y,x).fit()
+model.summary()
+plt.plot(file_data['RowNumber'].head() ,file_data['CreditScore'].head(),  )
+
+plt.title('Line plot')
+plt.xlabel('RowNumber')
+plt.ylabel('CreditScore')
+f = plt.subplots(figsize=(12,10))
+sns.heatmap(file_data.head().corr(), cmap="YlGnBu")
+corrmat = file_data.corr(method='spearman')
+cg = sns.clustermap(corrmat, cmap="YlGnBu", linewidths=0.1);
+plt.setp(cg.ax_heatmap.yaxis.get_majorticklabels(), rotation=0)
+cg
+file_data.shape
+file_data.kurt(numeric_only=True)
+quantile = file_data['Balance'].quantile(q=[0.75, 0.25])
+quantile
+print(file_data.isnull())
+print(file_data.isnull().sum())
+file_data.isna().any()
+x = sns.boxplot(x=file_data["Age"])
+x
+x = file_data.Age
+sns.boxplot(x=x)
+x = np.where(file_data['Age']>57,39, file_data['Age'])
+sns.boxplot(x=x)
+pd.Categorical(file_data["Geography"])
+One Hot Encoding
+
+pd.get_dummies(file_data["Geography"]).head(10)
+pd.get_dummies(file_data).head(10)
+Splitting the Dataset into the Independent
+
+X = file_data.iloc[:, :-1].values
+print(X)
+# Extracting the Dataset to Get the Dependent
+
+Y = file_data.iloc[:, -1].values
+print(Y)
+rom sklearn.preprocessing import scale
+from sklearn.model_selection import train_test_split
+x = file_data.drop("EstimatedSalary", axis=1)
+x
+y = file_data.EstimatedSalary
+y
+x_train,x_test,y_train,y_test=train_test_split(x,y,test_size=0.2)
+print(x_train.shape, x_test.shape)
